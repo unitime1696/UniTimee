@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jadwal Kuliah STIMIK Tunas Bangsa Banjarnegara</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #a1df97;
+      position: relative;
+      z-index: 1;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      background: url("stimikbanjar.jpg") no-repeat center center fixed;
+      background-size: cover;
+      opacity: 0.9;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+    }
+    body::after {
+      content: "";
+      background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(172,203,167,0.8));
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+    header {
+      background-color: rgba(39,151,43,0.9);
+      color: white;
+      padding: 10px 20px 25px;
+      text-align: center;
+      position: relative;
+      backdrop-filter: blur(4px);
+    }
+    #logo {
+      position: absolute;
+      top: 10px; left: 10px;
+      width: 90px; height: auto;
+    }
+    #namaKampus {
+      position: absolute;
+      top: 20px; left: 120px;
+      color: white; font-size: 18px; font-weight: bold;
+    }
+    #alamatKampus {
+      position: absolute;
+      top: 45px; left: 120px;
+      color: #f0f0f0; font-size: 14px;
+      font-style: italic; max-width: 600px;
+    }
+    header h1 { visibility: hidden; }
+    #content {
+      padding: 30px;
+      max-width: 700px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.85);
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
+      text-align: center;
+      backdrop-filter: blur(3px);
+    }
+    h2 { color: #2e7d32; margin-bottom: 15px; }
+    select, input {
+      padding: 10px; margin: 8px;
+      width: 80%; max-width: 300px;
+      border: 1px solid #4caf50;
+      border-radius: 6px; font-size: 15px;
+    }
+    table {
+      width: 100%; border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #4caf50;
+      padding: 10px; text-align: left;
+      background-color: rgba(255,255,255,0.9);
+    }
+    button {
+      background-color: #4caf50; color: white;
+      border: none; padding: 10px 18px;
+      cursor: pointer; border-radius: 6px;
+      margin: 8px 5px; transition: 0.3s;
+    }
+    button:hover { background-color: #388e3c; }
+    .delete-btn { background-color: #f44336; }
+    .delete-btn:hover { background-color: #d32f2f; }
+    #adminLoginContainer {
+      background-color: rgba(255,255,255,0.95);
+      padding: 25px; border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      text-align: center; max-width: 400px;
+      margin: 40px auto;
+    }
+    #keluarLoginBtn { background-color: #888; }
+    #keluarLoginBtn:hover { background-color: #666; }
+    @media (max-width: 600px) {
+      #logo, #namaKampus, #alamatKampus { position: static; display: block; text-align: center; }
+      #content { width: 90%; padding: 20px; }
+      select, input { width: 90%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo stimik.png" alt="Logo Kampus" id="logo" />
+    <span id="namaKampus">STIMIK Tunas Bangsa Banjarnegara</span>
+    <div id="alamatKampus">
+      Parakancanggah, Jl. Sokayasa Banjarnegara No.Kalisemi, Parakancanggah, Sokayasa, Kec. Banjarnegara, Kab. Banjarnegara, Jawa Tengah 53412
+    </div>
+    <h1>Informasi Jadwal Kuliah</h1>
+  </header>
+
+  <div id="content"></div>
+
+  <script>
+    
+    const jadwal = {
+      1: {
+        "Informatika": [
+          { hari: "Senin", jam: "08:30-10:00", matkul: "ALGORITMA DAN PEMROGRAMAN", ruangan: "R 2.3", dosen: "HENI RAHMAWATI (HR) / MUH ZIA ULKHAQ (ZU)" },
+          { hari: "Senin", jam: "10:15-11:45", matkul: "KALKULUS 1", ruangan: "R 2.3", dosen: "Drs. EDDY SUGIARSO (ED)" },
+          { hari: "Senin", jam: "13:00-16:15", matkul: "APLIKASI PERKANTORAN", ruangan: "R LAB", dosen: "FAJAR JUNAEDI EP (FZ)" },
+
+          { hari: "Selasa", jam: "08:30-10:00", matkul: "PENDIDIKAN AGAMA", ruangan: "R 2.3", dosen: "ABDUL HARIS FY (AH)" },
+          { hari: "Selasa", jam: "10:15-11:45", matkul: "PENGANTAR TEKNOLOGI INFORMASI", ruangan: "R 2.3", dosen: "TUTUT DWI PRIHATIN (TD) / HENI RAHMAWATI (HR)" },
+
+          { hari: "Rabu", jam: "08:30-10:00", matkul: "BAHASA INDONESIA", ruangan: "R 2.3", dosen: "IDA CAHYANI (ID)" },
+          { hari: "Rabu", jam: "10:15-11:45", matkul: "ASWAJA", ruangan: "R 2.3", dosen: "AZAM MUHAMMAD FITHRULMUNA (AZ)" },
+
+          { hari: "Kamis", jam: "08:30-10:00", matkul: "LOGIKA MATEMATIKA", ruangan: "R 1.1", dosen: "LUTHER NUR AZIZAH (LN)" },
+          { hari: "Kamis", jam: "10:15-11:45", matkul: "PENDIDIKAN PANCASILA", ruangan: "R 2.3", dosen: "IDA CAHYANI (ID)" },
+          { hari: "Kamis", jam: "13:00-14:30", matkul: "BAHASA INGGRIS 1", ruangan: "R 2.3", dosen: "IDA CAHYANI (ID)" }
+        ],
+        "Sistem Informasi": [
+          { hari: "Senin", jam: "08:30-10:00", matkul: "KALKULUS", ruangan: "R 1.1", dosen: "Drs. EDDY SUGIARSO (ED)" },
+          { hari: "Senin", jam: "10:15-11:45", matkul: "BAHASA INDONESIA", ruangan: "R 1.1", dosen: "IDA CAHYANI (ID)" },
+
+          { hari: "Selasa", jam: "08:30-10:00", matkul: "ALJABAR LINIER", ruangan: "R 1.1", dosen: "Drs. EDDY SUGIARSO (ED)" },
+          { hari: "Selasa", jam: "10:15-11:45", matkul: "PENDIDIKAN AGAMA", ruangan: "R 1.1", dosen: "ABDUL HARIS FY (AH)" },
+
+          { hari: "Rabu", jam: "08:30-10:00", matkul: "ASWAJA", ruangan: "R 1.1", dosen: "AZAM MUHAMMAD FITHRULMUNA (AZ)" },
+          { hari: "Rabu", jam: "10:15-11:45", matkul: "BAHASA INGGRIS 1", ruangan: "R 1.1", dosen: "IDA CAHYANI (ID)" },
+          { hari: "Rabu", jam: "13:00-14:30", matkul: "PENGANTAR TEKNOLOGI INFORMASI", ruangan: "R 2.3", dosen: "TUTUT DWI PRIHATIN (TD) / HENI RAHMAWATI (HR)" },
+
+          { hari: "Kamis", jam: "08:30-10:00", matkul: "PENDIDIKAN PANCASILA", ruangan: "R 2.3", dosen: "IDA CAHYANI (ID)" },
+          { hari: "Kamis", jam: "10:15-11:45", matkul: "APLIKASI PERKANTORAN", ruangan: "R LAB", dosen: "FAJAR JUNAEDI EP (FZ)" },
+          
+          { hari: "Sabtu", jam: "N/A", matkul: "ALGORITMA DAN PEMROGRAMAN", ruangan: "R 2.3", dosen: "FAJAR JUNAEDI EP (FJ)" }
+        ]
+      },
+      3: {
+        "Informatika": [
+          { hari: "Senin", jam: "08:30-10:00", matkul: "ANALISIS MLIMEROK", ruangan: "R 2.1", dosen: "LUTHER NUR AZIZAH (LN)" },
+          { hari: "Senin", jam: "10:15-11:45", matkul: "BASIS DATA", ruangan: "LAB", dosen: "TITIK HARYANTI (TH)" },
+
+          { hari: "Selasa", jam: "08:30-10:00", matkul: "MULTIMEDIA", ruangan: "R 2.2", dosen: "PURWANTO (PW)" },
+          { hari: "Selasa", jam: "13:00-14:30", matkul: "REKAYASA PERANGKAT LUNAK 1", ruangan: "LAB", dosen: "HENI RAHMAWATI (HR)" },
+
+          { hari: "Rabu", jam: "08:30-10:00", matkul: "SISTEM OPERASI", ruangan: "LAB", dosen: "PURWANTO (PW)" },
+          { hari: "Rabu", jam: "10:15-11:45", matkul: "ALJABAR LINEAR DAN MATRIK", ruangan: "R 2.2", dosen: "LUTHER NUR AZIZAH (LN)" },
+
+          { hari: "Kamis", jam: "08:30-10:00", matkul: "PEMROGRAMAN BERORIENTASI OBJEK", ruangan: "LAB", dosen: "HENI RAHMAWATI (HR)" },
+          { hari: "Kamis", jam: "10:15-11:45", matkul: "KOMUNIKASI DATA", ruangan: "R 2.2", dosen: "TUTUT DWI PRIHATIN (TD) / NURUS SYARIFATUL A (NS)" }
+        ],
+        "Sistem Informasi": [
+          { hari: "Senin", jam: "08:30-10:00", matkul: "KECERDASAN BUATAN", ruangan: "R 2.2", dosen: "PURWANTO (PW)" },
+          { hari: "Senin", jam: "10:15-11:45", matkul: "BASIS DATA", ruangan: "LAB", dosen: "TITIK HARYANTI (TH)" },
+          { hari: "Senin", jam: "13:00-14:30", matkul: "ANALISIS PROSES BISNIS", ruangan: "R 2.2", dosen: "UMAM FAQIH Z (UN)" },
+
+          { hari: "Selasa", jam: "10:15-11:45", matkul: "SISTEM INFORMASI MANAJEMEN", ruangan: "R 2.2", dosen: "(Tidak Ada Kode Dosen)" },
+          { hari: "Selasa", jam: "13:00-14:30", matkul: "TEKNIK RISET OPERASIONAL", ruangan: "R 2.2", dosen: "(Tidak Ada Kode Dosen - IN)" },
+
+          { hari: "Rabu", jam: "08:30-10:00", matkul: "SISTEM OPERASI", ruangan: "LAB", dosen: "PURWANTO (PW)" },
+
+          { hari: "Kamis", jam: "08:30-10:00", matkul: "PEMROGRAMAN BERORIENTASI OBJEK", ruangan: "LAB", dosen: "HENI RAHMAWATI (HR)" },
+          { hari: "Kamis", jam: "10:15-11:45", matkul: "PERBANKAN", ruangan: "R 2.2", dosen: "YUNIAR LAELI NUR F (YN)" }
+        ]
+      },
+      5: {
+        "Informatika": [
+          { hari: "Senin", jam: "10:15-11:45", matkul: "METODE PENELITIAN", ruangan: "R 2.1", dosen: "MUH ZIA ULKHAQ (ZU)" },
+
+          { hari: "Selasa", jam: "10:15-11:45", matkul: "PEMROGRAMAN WEB II", ruangan: "LAB", dosen: "TITIK HARYANTI (TH)" },
+          { hari: "Selasa", jam: "14:30-16:15", matkul: "ADMINISTRASI SISTEM JARINGAN", ruangan: "R 1.1", dosen: "FERRY FEBRIANTO (FF)" },
+          { hari: "Selasa", jam: "16:30-18:00", matkul: "TEORI BAHASA DAN AUTOMATA", ruangan: "R 1.1", dosen: "FERRY FEBRIANTO (FF)" },
+
+          { hari: "Rabu", jam: "08:30-10:00", matkul: "INTERAKSI MANUSIA DAN KOMPUTER", ruangan: "R 2.1", dosen: "NURUS SYARIFATUL A (NS)" },
+          { hari: "Rabu", jam: "10:15-11:45", matkul: "SISTEM TERDISTRIBUSI", ruangan: "B 2", dosen: "TUTUT DWI PRIHATIN (TD) / MUH ZIA ULKHAQ (ZU)" },
+
+          { hari: "Kamis", jam: "08:30-10:00", matkul: "SISTEM INFORMASI", ruangan: "R 2.1", dosen: "PURWANTO (PW)" },
+          { hari: "Kamis", jam: "13:00-14:30", matkul: "REKAYASA PERANGKAT LUNAK", ruangan: "LAB", dosen: "HENI RAHMAWATI (HR)" }
+        ],
+        "Sistem Informasi": [
+          { hari: "Senin", jam: "08:30-10:00", matkul: "METODE PENELITIAN", ruangan: "B 2", dosen: "MUH ZIA ULKHAQ (ZU)" },
+
+          { hari: "Selasa", jam: "08:30-10:00", matkul: "MANAJEMEN PROYEK SE", ruangan: "N/A", dosen: "(Tidak Ada Kode Dosen)" },
+          { hari: "Selasa", jam: "10:15-11:45", matkul: "ARSITEKTUR SI/TI PERUSAHAAN", ruangan: "B 2", dosen: "FAJAR JUNAEDI EP (FZ)" },
+
+          { hari: "Rabu", jam: "10:15-11:45", matkul: "PEMROGRAMAN DATABASE II", ruangan: "LAB", dosen: "TITIK HARYANTI (TH)" },
+          { hari: "Rabu", jam: "13:00-14:30", matkul: "MULTIMEDIA", ruangan: "R 1.1", dosen: "PURWANTO (PW)" },
+
+          { hari: "Kamis", jam: "08:30-10:00", matkul: "INTERAKSI MANUSIA DAN KOMPUTER", ruangan: "R 1.1", dosen: "NURUS SYARIFATUL A (NS)" }
+        ]
+      },
+      7: {
+        "Informatika": [
+          { hari: "Senin", jam: "16:30-18:00", matkul: "KEWIRAUSAHAAN", ruangan: "R 1.1", dosen: "YUNIAR LAELI NUR F (YN)" },
+
+          { hari: "Selasa", jam: "16:30-18:00", matkul: "Decision Support System", ruangan: "R 2.3", dosen: "NURUS SYARIFATUL A (NS)" },
+
+          { hari: "Rabu", jam: "16:30-18:00", matkul: "Perancangan Keamanan Sistem dan Jaringan", ruangan: "LAB", dosen: "PURWONO HENDRADI (PH)" },
+          { hari: "Rabu", jam: "18:15-19:45", matkul: "Pemrograman Mobile", ruangan: "LAB", dosen: "PURWONO HENDRADI (PH)" },
+
+          { hari: "Kamis", jam: "16:30-18:00", matkul: "KECAKAPAN ANTAR PERSONIL", ruangan: "R 1.1", dosen: "YUNIAR LAELI NUR F (YN)" }
+        ],
+        "Sistem Informasi": [
+          { hari: "Senin", jam: "13:00-14:30", matkul: "AUDIT SISTEM INFORMASI", ruangan: "R 2.3", dosen: "KHALIMATUROFIAH (KR)" },
+
+          { hari: "Selasa", jam: "10:15-11:45", matkul: "ENTERPRISE APPLICATION INTEGRATION", ruangan: "R 2.1", dosen: "MUH ZIA ULKHAQ (ZU)" },
+
+          { hari: "Rabu", jam: "10:15-11:45", matkul: "DECESSION SUPPORT SYSTEM", ruangan: "N/A", dosen: "(Tidak Ada Kode Dosen)" },
+
+          { hari: "Kamis", jam: "08:30-10:00", matkul: "ETIKA PROFESI T", ruangan: "R 2.1", dosen: "NURUS SYARIFATUL A (NS)" },
+          { hari: "Kamis", jam: "13:00-14:30", matkul: "KECAKAPAN ANTAR PERSONIL", ruangan: "R 2.1", dosen: "YUNIAR LAELI NUR F (YN)" }
+        ]
+      }
+    };
+    let logAkses = [];
+
+    function tampilkanHalamanUser() {
+      const c = document.getElementById("content");
+      c.innerHTML = `
+        <h2>Informasi Jadwal Kuliah</h2>
+        <h3>Pilih Semester, Prodi, dan Jenis Kelas</h3>
+        <div style="display:flex; flex-direction:column; align-items:center;">
+          <select id="semester">
+            <option value="1">Semester 1</option>
+            <option value="3">Semester 3</option>
+            <option value="5">Semester 5</option>
+            <option value="7">Semester 7</option>
+          </select>
+          <select id="prodi">
+            <option value="Informatika">Informatika</option>
+            <option value="Sistem Informasi">Sistem Informasi</option>
+          </select>
+          <select id="jenisKelas">
+            <option value="Reguler">Kelas Reguler</option>
+            <option value="Karyawan">Kelas Karyawan</option>
+          </select>
+          <button id="masukBtn">Lihat Jadwal</button>
+          <p><a href="#" id="adminLink">Login Admin</a></p>
+        </div>`;
+      document.getElementById("masukBtn").onclick = () => {
+        const s = document.getElementById("semester").value;
+        const p = document.getElementById("prodi").value;
+        tampilkanJadwal(s, p);
+        logAkses.push(`User melihat jadwal semester ${s} prodi ${p}`);
+      };
+      document.getElementById("adminLink").onclick = tampilkanHalamanAdminLogin;
+    }
+
+    function tampilkanJadwal(s, p) {
+      const c = document.getElementById("content");
+      const data = jadwal[s]?.[p] || [];
+      if (data.length === 0) {
+        c.innerHTML = `<h2>Tidak ada jadwal</h2><button id="keluarBtn">Kembali</button>`;
+      } else {
+        const hariUrut = ["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+        let t = `<h2>Jadwal Kuliah Semester ${s} - ${p}</h2>`;
+        hariUrut.forEach(h => {
+          const perhari = data.filter(x => x.hari === h);
+          if (perhari.length > 0) {
+            t += `<h3>${h}</h3><table><tr><th>Jam</th><th>Mata Kuliah</th><th>Ruangan</th><th>Dosen</th></tr>`;
+            perhari.forEach(i => {
+              t += `<tr><td>${i.jam}</td><td>${i.matkul}</td><td>${i.ruangan}</td><td>${i.dosen}</td></tr>`;
+            });
+            t += `</table>`;
+          }
+        });
+        t += `<button id="keluarBtn">Kembali</button>`;
+        c.innerHTML = t;
+      }
+      document.getElementById("keluarBtn").onclick = tampilkanHalamanUser;
+    }
+
+    function tampilkanHalamanAdminLogin() {
+      const c = document.getElementById("content");
+      c.innerHTML = `
+        <div id="adminLoginContainer">
+          <h2>Login Admin</h2>
+          <input id="username" placeholder="Username"><input id="password" type="password" placeholder="Password">
+          <div><button id="loginAdminBtn">Masuk</button><button id="keluarLoginBtn">Kembali</button></div>
+        </div>`;
+      document.getElementById("loginAdminBtn").onclick = () => {
+        const u = document.getElementById("username").value, p = document.getElementById("password").value;
+        if (u === "admin" && p === "admin2025") tampilkanMenuAdmin();
+        else alert("Login gagal!");
+      };
+      document.getElementById("keluarLoginBtn").onclick = tampilkanHalamanUser;
+    }
+
+    function tampilkanMenuAdmin() {
+      const c = document.getElementById("content");
+      c.innerHTML = `
+        <h2>Menu Admin</h2>
+        <button id="editBtn">Edit Jadwal Kuliah</button>
+        <button id="hapusBtn">Hapus Mata Kuliah</button>
+        <button id="lihatLoginBtn">Lihat Yang Sudah Login</button>
+        <button id="keluarAdminBtn">Keluar</button>`;
+      document.getElementById("editBtn").onclick = tampilkanEditJadwal;
+      document.getElementById("hapusBtn").onclick = tampilkanHapusJadwal;
+      document.getElementById("lihatLoginBtn").onclick = tampilkanLogAkses;
+      document.getElementById("keluarAdminBtn").onclick = tampilkanHalamanUser;
+    }
+
+    function tampilkanEditJadwal() {
+      const c = document.getElementById("content");
+      let f = `
+        <h2>Edit Jadwal Kuliah</h2>
+        <input id="semesterEdit" placeholder="Semester">
+        <input id="prodiEdit" placeholder="Prodi">
+        <input id="hariEdit" placeholder="Hari">
+        <input id="jamEdit" placeholder="Jam">
+        <input id="matkulEdit" placeholder="Mata Kuliah">
+        <input id="ruanganEdit" placeholder="Ruangan">
+        <input id="dosenEdit" placeholder="Dosen">
+        <button id="simpanEditBtn">Simpan Perubahan</button>
+        <button id="keluarEditBtn">Kembali</button>`;
+      c.innerHTML = f;
+      document.getElementById("simpanEditBtn").onclick = () => {
+        const s = document.getElementById("semesterEdit").value;
+        const p = document.getElementById("prodiEdit").value;
+        const baru = {
+          hari: document.getElementById("hariEdit").value,
+          jam: document.getElementById("jamEdit").value,
+          matkul: document.getElementById("matkulEdit").value,
+          ruangan: document.getElementById("ruanganEdit").value,
+          dosen: document.getElementById("dosenEdit").value
+        };
+        if (!jadwal[s]) jadwal[s] = {};
+        if (!jadwal[s][p]) jadwal[s][p] = [];
+        jadwal[s][p].push(baru);
+        alert("Jadwal berhasil diedit / ditambahkan!");
+      };
+      document.getElementById("keluarEditBtn").onclick = tampilkanMenuAdmin;
+    }
+
+    function tampilkanHapusJadwal() {
+      const c = document.getElementById("content");
+      let list = "<h2>Hapus Mata Kuliah</h2><table><tr><th>Semester</th><th>Prodi</th><th>Mata Kuliah</th><th>Aksi</th></tr>";
+      for (const s in jadwal) {
+        for (const p in jadwal[s]) {
+          jadwal[s][p].forEach((i, idx) => {
+            list += `<tr><td>${s}</td><td>${p}</td><td>${i.matkul}</td><td><button class='delete-btn' onclick='hapusMatkul("${s}","${p}",${idx})'>Hapus</button></td></tr>`;
+          });
+        }
+      }
+      list += "</table><button id='keluarHapusBtn'>Kembali</button>";
+      c.innerHTML = list;
+      document.getElementById("keluarHapusBtn").onclick = tampilkanMenuAdmin;
+    }
+
+    function hapusMatkul(s, p, idx) {
+      jadwal[s][p].splice(idx, 1);
+      alert("Mata kuliah dihapus!");
+      tampilkanHapusJadwal();
+    }
+
+    function tampilkanLogAkses() {
+      const c = document.getElementById("content");
+      let l = "<h2>Daftar Pengguna yang Sudah Login</h2><ul>";
+      logAkses.forEach((x) => l += `<li>${x}</li>`);
+      l += "</ul><button id='keluarLogBtn'>Kembali</button>";
+      c.innerHTML = l;
+      document.getElementById("keluarLogBtn").onclick = tampilkanMenuAdmin;
+    }
+
+    document.addEventListener("DOMContentLoaded", tampilkanHalamanUser);
+  </script>
+</body>
+</html>
